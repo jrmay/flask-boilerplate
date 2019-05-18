@@ -3,22 +3,33 @@ from flask_boilerplate.db import get_db
 
 # TODO: accept a specific user identifier
 class FeatureFlags:
-    def __init__(self, flags):
-        self.mapping = {}
-        for flag in flags:
-            self.mapping[flag['key']] = (flag['active'] == 1)
-
-    def get(self, key):
-        if key in self.mapping:
-            return self.mapping[key]
+    def get(self, key: str) -> bool:
+        mapping = self.mapping()
+        if key in mapping:
+            return mapping[key]
         else:
             return False
 
+    def set(self, key: str, value: bool):
+        db = get_db()
+        value_num = int(value)
+        db.execute(
+            'INSERT INTO feature_flags (key, active)'
+            'VALUES '
+            f"('{key}', {value_num});"
+        )
 
-def get_feature_flags():
-    db = get_db()
-    result = db.execute(
-        'SELECT key, active'
-        ' FROM feature_flags'
-    ).fetchall()
-    return FeatureFlags(result)
+    def mapping(self):
+        db = get_db()
+        flags = db.execute(
+            'SELECT key, active'
+            ' FROM feature_flags'
+        ).fetchall()
+        mapping = dict()
+        for flag in flags:
+            mapping[flag['key']] = (flag['active'] == 1)
+        return mapping
+
+
+def get_feature_flags() -> FeatureFlags:
+    return FeatureFlags()

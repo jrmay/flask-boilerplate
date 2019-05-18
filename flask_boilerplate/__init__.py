@@ -45,6 +45,6 @@ def generate_routes(app):
         flags = get_feature_flags()
         context = {
             'time': datetime.datetime.now(),
-            'show_time': flags.get('show_time_on_about_page'),
+            'show_time': flags.get('show-time-on-about-page'),
         }
         return render_template('about.html', context=context)
