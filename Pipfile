@@ -9,6 +9,7 @@ verify_ssl = true
 flask = "*"
 pytest = "*"
 coverage = "*"
+codecov = "*"
 
 [requires]
 python_version = "3.7"
