@@ -7,4 +7,4 @@ install:
   - pipenv install
 # command to run tests
 script:
-  - pytest
+  - pipenv run coverage run -m pytest
