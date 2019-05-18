@@ -8,3 +8,5 @@ install:
 # command to run tests
 script:
   - pipenv run coverage run -m pytest
+after_success:
+  - codecov
