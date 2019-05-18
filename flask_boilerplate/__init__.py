@@ -1,8 +1,6 @@
 import os
 
-from flask import Flask, render_template
-
-import datetime
+from flask import Flask
 
 from flask_boilerplate.feature_flags import get_feature_flags
 
@@ -39,12 +37,3 @@ def generate_routes(app):
     @app.route('/')
     def hello_world():
         return 'Hello World!'
-
-    @app.route('/about')
-    def about():
-        flags = get_feature_flags()
-        context = {
-            'time': datetime.datetime.now(),
-            'show_time': flags.get('show-time-on-about-page'),
-        }
-        return render_template('about.html', context=context)
