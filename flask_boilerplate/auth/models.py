@@ -31,3 +31,9 @@ class User:
         return len(db.execute(
             'SELECT id FROM users'
         ).fetchall())
+
+    @staticmethod
+    def get_by_id(user_id):
+        return get_db().execute(
+            'SELECT * FROM users WHERE id = ?', (user_id,)
+        ).fetchone()

@@ -1,5 +1,5 @@
-from flask import Blueprint, request, redirect, url_for, flash,\
-    render_template, session
+from flask import Blueprint, request, redirect, url_for, flash, \
+    render_template, session, g
 from werkzeug.security import check_password_hash
 
 from flask_boilerplate.auth.models import User
@@ -52,3 +52,19 @@ def login():
         flash(error)
 
     return render_template('auth/login.html')
+
+
+@auth_blueprint.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('index'))
+
+
+@auth_blueprint.before_app_request
+def load_logged_in_user():
+    user_id = session.get('user_id')
+
+    if user_id is None:
+        g.user = None
+    else:
+        g.user = User.get_by_id(user_id)

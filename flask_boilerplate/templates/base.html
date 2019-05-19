@@ -12,6 +12,18 @@
     {% endfor %}
 </div>
 
+<div>
+    {% if user %}
+        <div class="username">{{ user['username'] }}</div>
+        <div class="logout">
+            <a href="{{ url_for('auth.logout') }}"></a>
+        </div>
+    {% else %}
+        <a href="{{ url_for('auth.register') }}">Register</a>
+        <a href="{{ url_for('auth.login') }}">Login</a>
+    {% endif %}
+</div>
+
 {% block content %}{% endblock %}
 
 </body>

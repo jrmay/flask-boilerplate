@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask
+from flask import Flask, render_template, g
 
 from flask_boilerplate.auth import auth_blueprint
 from flask_boilerplate.feature_flags import get_feature_flags
@@ -40,3 +40,7 @@ def generate_routes(app):
     @app.route('/')
     def index():
         return 'Hello World!'
+
+    @app.route('/about')
+    def about():
+        return render_template('about.html', user=g.user)
