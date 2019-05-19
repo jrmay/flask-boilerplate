@@ -63,3 +63,9 @@ def test_logging_in_with_bad_password_fails(client):
     data = {'username': username, 'password': password}
     response = client.post('/auth/login', data=data)
     assert b'Incorrect password' in response.data
+
+
+def test_logout(client):
+    response = client.get('/auth/logout')
+    assert response.status_code == 302
+    assert 'session=;' in response.headers['Set-Cookie']
