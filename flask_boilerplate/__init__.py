@@ -2,6 +2,7 @@ import os
 
 from flask import Flask
 
+from flask_boilerplate.auth import auth_blueprint
 from flask_boilerplate.feature_flags import get_feature_flags
 
 
@@ -30,10 +31,12 @@ def create_app(config: dict = None) -> Flask:
 
     generate_routes(app)
 
+    app.register_blueprint(auth_blueprint)
+
     return app
 
 
 def generate_routes(app):
     @app.route('/')
-    def hello_world():
+    def index():
         return 'Hello World!'
