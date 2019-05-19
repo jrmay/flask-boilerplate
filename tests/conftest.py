@@ -21,6 +21,7 @@ def app():
     app = create_app({
         'DATABASE': database,
         'TESTING': True,
+        'SECRET_KEY': 'test',
     })
 
     with app.app_context():

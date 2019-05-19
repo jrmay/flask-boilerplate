@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+<div class="flash-messages">
+    {% for message in get_flashed_messages() %}
+        <div class="flash">{{ message }}</div>
+    {% endfor %}
+</div>
+
+<div>
+    {% if user %}
+        <div class="username">{{ user['username'] }}</div>
+        <div class="logout">
+            <a href="{{ url_for('auth.logout') }}">Log outqw</a>
+        </div>
+    {% else %}
+        <a href="{{ url_for('auth.register') }}">Register</a>
+        <a href="{{ url_for('auth.login') }}">Login</a>
+    {% endif %}
+</div>
+
+{% block content %}{% endblock %}
+
+</body>
+</html>
