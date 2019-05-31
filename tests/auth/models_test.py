@@ -18,3 +18,10 @@ def test_user_create():
     initial_count = User.count()
     User.create(username, password)
     assert User.count() == initial_count + 1
+
+
+@in_app_context
+def test_user_get_by_id_returns_existing_user():
+    user = User.get_by_id(1)
+    assert user.__class__ is sqlite3.Row
+    assert user['username'] == 'jordanmay'
