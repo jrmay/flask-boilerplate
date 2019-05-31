@@ -1,3 +1,6 @@
+from flask_boilerplate.auth.util import do_login
+
+
 def test_register_page_renders(client):
     response = client.get('/auth/register')
     assert b'Username' in response.data
@@ -32,13 +35,22 @@ def test_registering_existing_user_fails(client):
     password = 'password'
     data = {'username': username, 'password': password}
     response = client.post('/auth/register', data=data)
-    print(response.data)
     assert b'User jordanmay is already registered' in response.data
 
 
 def test_login_page_renders(client):
     response = client.get('/auth/login')
     assert b'Username' in response.data
+
+
+def test_login_page_shows_log_out_when_authed(client):
+    with client:
+        username = 'jordanmay'
+        password = 'password'
+        data = {'username': username, 'password': password}
+        _ = client.post('/auth/login', data=data)
+        response = client.get('/auth/login')
+    assert b'Log out' in response.data
 
 
 def test_logging_in(client):
@@ -66,6 +78,9 @@ def test_logging_in_with_bad_password_fails(client):
 
 
 def test_logout(client):
-    response = client.get('/auth/logout')
+    with client:
+        client.get('/')  # Arbitrary route, need a request context to do_login
+        do_login('jordanmay', 'password')
+        response = client.get('/auth/logout')
     assert response.status_code == 302
     assert 'session=;' in response.headers['Set-Cookie']
